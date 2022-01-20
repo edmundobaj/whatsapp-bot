@@ -1,2 +1,2 @@
 whatsapp-bot-venv/**
-_pycache_/**
+__pycache__/**
