@@ -19,6 +19,7 @@ def bot():
 
     if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "3" and session.get("option") == "1":
         session["level"] = "3"
+        session.pop('option', None)
         mensagem = "Digite seu Nome Completo..."
         msg.body(mensagem)
         responded = True
