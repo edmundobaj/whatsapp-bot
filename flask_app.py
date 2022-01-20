@@ -27,8 +27,13 @@ def bot():
         # retorne uma foto de gato        
         msg.media('https://cataas.com/cat')
         responded = True
-    if not responded:             
-        msg.body('Só conheço frases e gatos famosos, desculpe!')
+    if not responded:  
+        mensagem = "Selecione uma das opções abaixo: "
+        mensagem.join("\n\n")           
+        mensagem.join("1 - Agendamento")
+        mensagem.join("\n")           
+        mensagem.join("2 - Quero atendimento humano")
+        msg.body(mensagem)
     return str(resp)
 
 if __name__ == '__main__':
