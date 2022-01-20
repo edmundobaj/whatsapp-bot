@@ -17,13 +17,33 @@ def bot():
     msg = resp.message()
     responded = False
 
-    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "4" and session.get("fluxo") == "1":
+    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "5" and session.get("flow") == "1":
+        session["level"] = "6"
+        session.pop('option', None)
+        mensagem = "Legal. Agora vamos para os dias e horários... Qual o melhor dia para você?"
+        mensagem += "\n\n"
+        mensagem += "1 - Segunda"
+        mensagem += "\n"
+        mensagem += "2 - Terça"
+        mensagem += "\n"
+        mensagem += "3 - Quarta"
+        mensagem += "\n"
+        mensagem += "4 - Quinta"
+        mensagem += "\n"
+        mensagem += "5 - Sexta"
+        mensagem += "\n"
+        mensagem += "6 - Sábado"
+        mensagem += "\n\n"
+        mensagem += "# - Voltar ao menu principal"
+        msg.body(mensagem)
+        responded = True
+    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "4" and session.get("flow") == "1":
         session["level"] = "5"
         session.pop('option', None)
         mensagem = "Digite sua Data de Nascimento"
         msg.body(mensagem)
         responded = True
-    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "3" and session.get("fluxo") == "1":
+    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "3" and session.get("flow") == "1":
         session["level"] = "4"
         session.pop('option', None)
         mensagem = "Digite seu Nome Completo..."
@@ -33,7 +53,7 @@ def bot():
         # Primeira Consulta
         session["level"] = "3"
         session["option"] = "1"
-        session["fluxo"] = "1"
+        session["flow"] = "1"
         mensagem = "Legal que é sua primeira consulta. Tem alguma especialidade que você quer agendar?"
         msg.body(mensagem)
         responded = True
