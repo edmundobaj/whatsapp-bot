@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, session
 from flask_session import Session
 import requests
 from twilio.twiml.messaging_response import MessagingResponse
