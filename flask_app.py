@@ -17,6 +17,17 @@ def bot():
     msg = resp.message()
     responded = False
 
+    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "7" and session.get("flow") == "1":
+        session.pop('level', None)
+        session.pop('flow', None)
+        session.pop('option', None)        
+        responded = True
+    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "6" and session.get("flow") == "1":
+        session["level"] = "7"
+        session.pop('option', None)
+        mensagem = "Combinado. Vou levar seus dados para um humano confirmar seu agendamento. Aguarde um instate."
+        msg.body(mensagem)
+        responded = True
     if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "5" and session.get("flow") == "1":
         session["level"] = "6"
         session.pop('option', None)
