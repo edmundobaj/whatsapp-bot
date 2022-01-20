@@ -29,10 +29,10 @@ def bot():
         responded = True
     if not responded:  
         mensagem = "Selecione uma das opções abaixo: "
-        mensagem = mensagem.join("\n\n")           
-        mensagem = mensagem.join("1 - Agendamento")
-        mensagem = mensagem.join("\n")           
-        mensagem = mensagem.join("2 - Quero atendimento humano")
+        mensagem += "\n\n"
+        mensagem += "1 - Agendamento"
+        mensagem += "\n"
+        mensagem += "2 - Quero atendimento humano"
         msg.body(mensagem)
     return str(resp)
 
