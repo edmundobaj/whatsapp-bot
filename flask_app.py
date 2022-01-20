@@ -17,14 +17,22 @@ def bot():
     msg = resp.message()
     responded = False
 
-    if '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "2":
+    if not responded and session.get("client_id") == request.remote_addr and session.get("level") == "3" and session.get("option") == "1":
         session["level"] = "3"
+        mensagem = "Digite seu Nome Completo..."
+        msg.body(mensagem)
+        responded = True
+    if not responded and '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "2" and session.get("option") == "1":
+        # Primeira Consulta
+        session["level"] = "3"
+        session["option"] = "1"
         mensagem = "Legal que é sua primeira consulta. Tem alguma especialidade que você quer agendar?"
         msg.body(mensagem)
         responded = True
     if not responded and '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "1":
         # Agendamento      
-        session["level"] = "2"  
+        session["level"] = "2" 
+        session["option"] = "1" 
         mensagem = "Selecione uma das opções abaixo: "
         mensagem += "\n\n"
         mensagem += "1 - Primeira Consulta"
