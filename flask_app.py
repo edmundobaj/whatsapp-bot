@@ -10,8 +10,7 @@ Session(app)
 
 
 @app.route('/bot', methods=['POST'])
-def bot():
-    session["client_id"] = request.remote_addr
+def bot():    
     incoming_msg = request.values.get('Body', '').lower()
     print(incoming_msg)
     resp = MessagingResponse()
@@ -23,7 +22,7 @@ def bot():
         mensagem = "Legal que é sua primeira consulta. Tem alguma especialidade que você quer agendar?"
         msg.body(mensagem)
         responded = True
-    if '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "1":
+    if not responded and '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "1":
         # Agendamento      
         session["level"] = "2"  
         mensagem = "Selecione uma das opções abaixo: "
@@ -49,6 +48,8 @@ def bot():
         mensagem += "\n"
         mensagem += "2 - Atendimento humano"
         msg.body(mensagem)
+    
+    session["client_id"] = request.remote_addr
     return str(resp)
 
 if __name__ == '__main__':
