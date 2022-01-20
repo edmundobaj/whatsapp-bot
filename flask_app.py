@@ -1,38 +1,53 @@
 from flask import Flask, request
+from flask_session import Session
 import requests
 from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 @app.route('/bot', methods=['POST'])
 def bot():
+    session["client_id"] = request.remote_addr
     incoming_msg = request.values.get('Body', '').lower()
     print(incoming_msg)
     resp = MessagingResponse()
     msg = resp.message()
     responded = False
 
-    if 'citação' in incoming_msg:
-        # retorne uma citação        
-        r = requests.get('https://api.quotable.io/random')
-        if r.status_code == 200:
-            data = r.json()
-            quote = f'{data["content"]} ({data["author"]})'
-        else:
-            quote = 'Não consegui recuperar uma citação neste momento, desculpe.'
-        msg.body(quote)
+    if '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "2":
+        session["level"] = "3"
+        mensagem = "Legal que é sua primeira consulta. Tem alguma especialidade que você quer agendar?"
+        msg.body(mensagem)
         responded = True
-    if 'gato' in incoming_msg or 'gata' in incoming_msg:
-        # retorne uma foto de gato        
-        msg.media('https://cataas.com/cat')
-        responded = True
-    if not responded:  
+    if '1' in incoming_msg and session.get("client_id") == request.remote_addr and session.get("level") == "1":
+        # Agendamento      
+        session["level"] = "2"  
+        mensagem = "Selecione uma das opções abaixo: "
+        mensagem += "\n\n"
+        mensagem += "1 - Primeira Consulta"
+        mensagem += "\n"
+        mensagem += "2 - Retorno"
+        mensagem += "\n"
+        mensagem += "3 - Conhecer a Clínica"
+        mensagem += "\n"
+        mensagem += "4 - Planos e Convênios"
+        mensagem += "\n"
+        mensagem += "5 - Estou com dor e preciso de ajuda"
+        mensagem += "\n\n"
+        mensagem += "# - Voltar ao menu principal"
+        msg.body(mensagem)
+        responded = True    
+    if not responded or '#' in incoming_msg: 
+        session["level"] = "1"
         mensagem = "Selecione uma das opções abaixo: "
         mensagem += "\n\n"
         mensagem += "1 - Agendamento"
         mensagem += "\n"
-        mensagem += "2 - Quero atendimento humano"
+        mensagem += "2 - Atendimento humano"
         msg.body(mensagem)
     return str(resp)
 
